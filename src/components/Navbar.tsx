@@ -1,43 +1,66 @@
-import React from "react";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  return (
-    <nav className="flex justify-between items-center bg-gray-300 p-2">
-      <div className="flex flex-col items-start space-y-0 text-zinc-600">
-        <Link to={"/"}>
-          <img src="/assets/756.jpg" alt="Logo" className="h-10 w-10 object-cover rounded-md" />
-        </Link>
-        <span className="text-sm -mb-1">Discover Your Team's</span>
-        <span className="text-sm -mb-1">Playground</span>
-        <span className="text-sm">Find Places to Play Together</span>
+
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+  const dropdownProfile = () =>{
+    return(
+      <div className="absolute right-10 top-8 mt-10 flex flex-col bg-white border-[1px] border-gray w-[126px] rounded-[15px] p-4">
+        <ul className="flex flex-col gap-4">
+          <Link to={""}>
+          <li>
+            Profile
+          </li>
+          </Link>
+          <Link to={""}>
+          <li className="border-b-[1px] border-gray">
+            Settings
+          </li>
+          </Link>
+          <Link to={""}>
+          <li>
+            Logout
+          </li>
+          </Link>
+        </ul>
       </div>
-      <ul className="flex items-cecnter space-x-4">
-        <li>
-          <Link to={"/calendar"}>
-            <CalendarMonthIcon fontSize="small" />
+    );
+  }
+
+  return (
+    <nav className="relative w-[100%]">
+      <div className="flex p-4 text-dark-text-color bg-dark-bg-color">
+        <div className="flex items-center flex-1">
+          <span className="text-3xl font-bold">Sport Event App</span>
+        </div>
+        <ul className="flex gap-8 mr-16 text-[18px]">
+          <Link to={"/"}>
+            <li className="my-4 border-b border-slate-700 hover:bg-dark-bg-color-hover duration-150 rounded">Home</li>
           </Link>
-        </li>
-        <li>
-          <Link to={"/chat"}>
-            <ChatBubbleOutlineIcon fontSize="small" />
+          <Link to={"events"}>
+            <li className="my-4 border-b border-slate-700 hover:bg-dark-bg-color-hover duration-150 rounded">Events</li>
           </Link>
-        </li>
-        <li>
-          <Link to={"/notifications"}>
-            <NotificationsNoneIcon fontSize="small" />
+          <Link to={"ranking"}>
+            <li className="my-4 border-b border-slate-700 hover:bg-dark-bg-color-hover duration-150 rounded">Ranking</li>
           </Link>
-        </li>
-        <li className="flex flex-col items-center">
-          <span className="text-sm font-bold">Jan Maj</span>
-          <span className="text-xs">Poland</span>
-        </li>
-      </ul>
+          <Link to={"about"}>
+            <li className="my-4 border-b border-slate-700 hover:bg-dark-bg-color-hover duration-150 rounded">About</li>
+          </Link>
+          <li onClick={() => setIsDropdownVisible(x=>!x)} onBlur={() => setIsDropdownVisible(false)} className="flex items-center gap-2 my-4 hover:cursor-pointer">
+            <img className="rounded-[12px] object-cover w-8 h-8" src="https://www.imgonline.com.ua/examples/random-pixels-wallpaper-big.jpg" />
+            <span className="text-[14px]">Jan Maj</span>
+          </li>
+        </ul>
+      </div>
+      {isDropdownVisible && dropdownProfile()}
     </nav>
   );
 };
 
 export default Navbar;
+function userRef() {
+  throw new Error("Function not implemented.");
+}
+
