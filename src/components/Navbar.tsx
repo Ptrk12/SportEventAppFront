@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
 
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const dropdownRef = useRef<HTMLLIElement>(null);
+
+  useEffect(()=>{
+    const handleClickOutside = (e:MouseEvent) => {
+      if(dropdownRef.current && !dropdownRef.current.contains(e.target as Node)){
+        setIsDropdownVisible(false);
+      }
+    };
+    document.addEventListener("click",handleClickOutside)
+    return () => {
+      document.removeEventListener("click",handleClickOutside);
+    };
+  },[])
+
 
   const dropdownProfile = () =>{
     return(
@@ -48,7 +62,7 @@ const Navbar = () => {
           <Link to={"about"}>
             <li className="my-4 border-b border-slate-700 hover:bg-dark-bg-color-hover duration-150 rounded">About</li>
           </Link>
-          <li onClick={() => setIsDropdownVisible(x=>!x)} onBlur={() => setIsDropdownVisible(false)} className="flex items-center gap-2 my-4 hover:cursor-pointer">
+          <li onClick={() => setIsDropdownVisible(x=>!x)} ref={dropdownRef} className="flex items-center gap-2 my-4 hover:cursor-pointer">
             <img className="rounded-[12px] object-cover w-8 h-8" src="https://www.imgonline.com.ua/examples/random-pixels-wallpaper-big.jpg" />
             <span className="text-[14px]">Jan Maj</span>
           </li>
@@ -60,7 +74,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
-function userRef() {
-  throw new Error("Function not implemented.");
-}
 
