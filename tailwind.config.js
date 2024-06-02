@@ -10,7 +10,8 @@ module.exports = {
         "dark-bg-color-hover": "var(--dark-bg-color-hover)"
       },
       textColor:{
-        "dark-text-color": "var(--dark-text-color)"
+        "dark-text-color": "var(--dark-text-color)",
+        "white-text-color": "var(--white-text-color)"
       }
     },
   },
