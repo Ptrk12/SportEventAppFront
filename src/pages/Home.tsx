@@ -1,24 +1,68 @@
-import React from 'react'
-import SportEventCardItem from '../components/SportEventCardItem'
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  SelectChangeEvent,
+} from "@mui/material";
+import { useState } from "react";
 
-const tempItemToDeleteLater = {
-  category:"football",
-  city:"Kraków",
-  address:"Aleja 29 listopada 12/22",
-  dateWhen:"02.06.2024",
-  dateTime:"15:15",
-  poepleCount:10,
-  peopleAssigned:10,
-  cost:10.20,
-  skillLevel:"Amateur"
+interface FormComponentProps {
+  discipline: string;
+  city: string;
+  searchString: string;
 }
 
 const Home = () => {
-  return (
-    <div>
-      <SportEventCardItem item={tempItemToDeleteLater}/>
-    </div>
-  )
-}
+  const [searchFormValues, setSearchFormValues] = useState<FormComponentProps>({
+    discipline: "",
+    city: "",
+    searchString: "",
+  });
 
-export default Home
+  const onInputSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setSearchFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleDisciplineChange = (event: SelectChangeEvent<string>) => {
+    setSearchFormValues((prevValues) => ({
+      ...prevValues,
+      discipline: event.target.value as string,
+    }));
+  };
+
+  return (
+    <div className="flex flex-col">
+      <div className="flex align-center justify-center">
+        <span>What would You like to do?</span>
+      </div>
+      <div className="flex align-center justify-center">
+        <div className="flex">
+          <FormControl className="w-[160px]">
+            <InputLabel id="discipline-select-label">Discipline</InputLabel>
+            <Select
+              labelId="discipline-select-label"
+              id="discipline-select"
+              value={searchFormValues.discipline}
+              name="discipline"
+              label="Discipline"
+              onChange={handleDisciplineChange}
+            >
+              <MenuItem value="football">Football</MenuItem>
+              <MenuItem value="volleyball">Volleyball</MenuItem>
+              <MenuItem value="basketball">Basketball</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
