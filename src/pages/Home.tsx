@@ -32,7 +32,6 @@ const Home = () => {
       [name]: value,
     }));
   };
-console.log(searchFormValues.searchString)
   return (
     <div className="flex flex-col">
       <div className="relative bg-[url('/public/assets/home-bg.jpg')] h-[600px] w-full bg-cover bg-center bg-top">
