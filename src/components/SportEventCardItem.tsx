@@ -6,25 +6,17 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { Button } from "@mui/material";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { SportEvent, extractDateTime } from '../interfaces';
 
+
+//TODO DODAC ADRES DO API BACKEND !!!
 interface Props {
-  item: {
-    id: number;
-    category: string;
-    city: string;
-    address: string;
-    dateWhen: string;
-    dateTime: string;
-    poepleCount: number;
-    peopleAssigned: number;
-    cost: number;
-    skillLevel: string;
-    isMultisportCard: boolean | null;
-  };
+  item: SportEvent
 }
 
 const SportEventCardItem = ({ item }: Props) => {
-  const formattedCost = item.cost.toFixed(2);
+
+  const formattedCost = item.price.toFixed(2);
 
   const renderMultiSport = () => {
     if (item.isMultisportCard === true) {
@@ -37,13 +29,15 @@ const SportEventCardItem = ({ item }: Props) => {
     return null;
   };
 
+const parsedDateAndTime = extractDateTime(item.dateWhen);
+
   const getCategoryImageSrc = () => {
-    switch (item.category) {
-      case "football":
+    switch (item.discipline) {
+      case "Football":
         return "/assets/football.jpg";
-      case "basketball":
+      case "Basketball":
         return "/assets/basketball.jpg";
-      case "volleyball":
+      case "Volleyball":
         return "/assets/volleyball.jpg";
       default:
         return "/assets/default.jpg";
@@ -55,7 +49,7 @@ const SportEventCardItem = ({ item }: Props) => {
     max-w-[350px] text-gray-800 transition-transform transform hover:scale-105 shadow-lg">
       {renderMultiSport()}
       <div className="ml-3 p-3 bg-orange-500 text-white mb-4 mt-4 max-w-[160px] rounded-[15px]">
-        {item.city}
+        {item.objectCity}
       </div>
       <div className="flex justify-center max-w-full">
         <img
@@ -72,18 +66,22 @@ const SportEventCardItem = ({ item }: Props) => {
       <div className="flex items-center justify-between p-5 mx-[8px]">
         <div className="flex items-center text-gray-600">
           <CalendarMonthIcon />
-          <span className="ml-2">{item.dateWhen}</span>
+          <span>{parsedDateAndTime.date}</span>
         </div>
         <div className="flex items-center text-gray-600">
           <AccessTimeIcon />
-          <span className="ml-2">{item.dateTime}</span>
+          <span>{parsedDateAndTime.time}</span>
         </div>
         <div className="flex items-center text-gray-600">
           <PeopleAltIcon />
           <span
-            className={item.peopleAssigned === item.poepleCount ? "text-red-500" : "text-green-500"}
+            className={
+              item.peopleAssigned === item.amountOfPlayers
+                ? "text-red-500"
+                : "text-green-500"
+            }
           >
-            {item.peopleAssigned}/{item.poepleCount}
+            {item.peopleAssigned}/{item.amountOfPlayers}
           </span>
         </div>
       </div>
