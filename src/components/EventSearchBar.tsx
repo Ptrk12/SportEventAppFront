@@ -7,6 +7,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import React, { useState } from 'react';
 import { Search } from '@mui/icons-material';
 import { SportEvent } from '../interfaces';
+import dayjs, { Dayjs } from 'dayjs'; // Import 'dayjs' and 'Dayjs'
+
 interface Props {
     open: boolean;
     toggleDrawer: (newOpen: boolean) => void;
@@ -19,11 +21,13 @@ const EventSearchBar = ({ open, toggleDrawer, events, onFilter }: Props) => {
     const [city, setCity] = useState('');
     const [skillLevel, setSkillLevel] = useState('');
     const [isMultiSport, setIsMultiSport] = useState(false);
-    const [dateWhen, setDateWhen] = useState(null);
+    const [dateWhen, setDateWhen] = useState<string | null>(null);  // Store the date as a string
 
     const handleDrawerClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => {
         toggleDrawer(false);
     };
+
+    console.log(dateWhen);  
 
     const handleSearch = () => {
         const filteredEvents = events.filter(event => {
@@ -31,15 +35,13 @@ const EventSearchBar = ({ open, toggleDrawer, events, onFilter }: Props) => {
             const matchesCity = city ? event.objectCity === city : true;
             const matchesSkillLevel = skillLevel ? event.skillLevel === skillLevel : true;
             const matchesMultiSport = isMultiSport ? event.isMultisportCard === isMultiSport : true;
-
-            return matchesDiscipline && matchesCity && matchesSkillLevel && matchesMultiSport;
+            const matchesDate = dateWhen ? event.dateWhen === dateWhen : true;
+            return matchesDiscipline && matchesCity && matchesSkillLevel && matchesMultiSport && matchesDate;
         });
 
         onFilter(filteredEvents); 
         toggleDrawer(false); 
-
     };
-
 
     const DrawerList = (
         <div className='h-[100px] flex items-center justify-center p-5 gap-5'>
@@ -118,8 +120,15 @@ const EventSearchBar = ({ open, toggleDrawer, events, onFilter }: Props) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                     label="When"
-                    value={dateWhen}
-                    // onChange={(e) => setDateWhen(e.target.value)}
+                    value={dateWhen ? dayjs(dateWhen) : null} 
+                    onChange={(newDate) => {
+                        if (newDate) {
+                            const formattedDate = newDate.format('YYYY-MM-DD'); 
+                            setDateWhen(formattedDate); 
+                        } else {
+                            setDateWhen(null); 
+                        }
+                    }}
                 />
             </LocalizationProvider>
             <IconButton onClick={handleSearch}>

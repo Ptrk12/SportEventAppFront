@@ -12,7 +12,6 @@ const Events = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Use a ref to track if the fetchEvents has been called
   const isFetching = useRef(false);
 
   const toggleDrawer = (newOpen: boolean) => {
@@ -39,9 +38,8 @@ const Events = () => {
   };
 
   useEffect(() => {
-    // Ensure the fetchEvents is only called once during the initial mount
     if (!isFetching.current) {
-      isFetching.current = true;  // Mark as fetching to prevent double calls
+      isFetching.current = true;  
       fetchEvents();
     }
   }, []);
