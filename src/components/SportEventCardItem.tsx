@@ -3,7 +3,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { Button, IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { SportEvent, extractDateTime } from '../interfaces';
@@ -21,7 +21,7 @@ const SportEventCardItem = ({ item }: Props) => {
   const renderMultiSport = () => {
     if (item.isMultisportCard === true) {
       return (
-        <div className="absolute top-2 right-2 bg-cyan-600 text-white rounded-full w-8 h-8 flex items-center justify-center">
+        <div className="absolute top-2 right-2 bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center">
           M
         </div>
       );
@@ -46,9 +46,9 @@ const parsedDateAndTime = extractDateTime(item.dateWhen);
 
   return (
     <div className="relative flex flex-col bg-white rounded-[15px] border border-gray-300 
-    max-w-[350px] text-white-text-color transition-transform transform hover:scale-105">
-        {renderMultiSport()}
-      <div className="ml-3 p-3 bg-violet-400 mb-4 mt-4 max-w-[160px] rounded-[15px]">
+    max-w-[350px] text-gray-800 transition-transform transform hover:scale-105 shadow-lg">
+      {renderMultiSport()}
+      <div className="ml-3 p-3 bg-orange-500 text-white mb-4 mt-4 max-w-[160px] rounded-[15px]">
         {item.objectCity}
       </div>
       <div className="flex justify-center max-w-full">
@@ -58,22 +58,21 @@ const parsedDateAndTime = extractDateTime(item.dateWhen);
           alt="image"
         />
       </div>
-      <div className="flex items-center justify-center p-5">
+      <div className="flex items-center justify-center p-5 text-gray-600">
         <LocationOnIcon />
-        {/* {item.address} */}
-         Skrzypaczowice 95
+        <span className="ml-2">{item.address}</span>
       </div>
-      <div className="border-b-[1px] border-gray min-w-[85%] mx-auto"></div>
+      <div className="border-b-[1px] border-gray-300 min-w-[85%] mx-auto"></div>
       <div className="flex items-center justify-between p-5 mx-[8px]">
-        <div className="flex items-center">
+        <div className="flex items-center text-gray-600">
           <CalendarMonthIcon />
           <span>{parsedDateAndTime.date}</span>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center text-gray-600">
           <AccessTimeIcon />
           <span>{parsedDateAndTime.time}</span>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center text-gray-600">
           <PeopleAltIcon />
           <span
             className={
@@ -86,22 +85,19 @@ const parsedDateAndTime = extractDateTime(item.dateWhen);
           </span>
         </div>
       </div>
-      <div className="flex items-center justify-center">
-            <StarBorderIcon />
-            <span>
-                {item.skillLevel}
-            </span>
+      <div className="flex items-center justify-center text-gray-600">
+        <StarBorderIcon />
+        <span className="ml-2">{item.skillLevel}</span>
       </div>
-      <div className="border-b-[1px] border-gray min-w-[85%] mx-auto"></div>
-      <div className="flex justify-center text-4xl my-[15px]">
+      <div className="border-b-[1px] border-gray-300 min-w-[85%] mx-auto"></div>
+      <div className="flex justify-center text-4xl my-[15px] text-gray-800">
         {formattedCost} zł
       </div>
       <div className="p-5">
         <Button
-            className="w-[100%]"
+          className="w-[100%] bg-orange-500 hover:bg-orange-600 text-white"
           variant="contained"
           endIcon={<LocalAtmIcon />}
-          color="secondary"
         >
           Sign up
         </Button>

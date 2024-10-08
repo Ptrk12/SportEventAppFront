@@ -48,32 +48,25 @@ const Events = () => {
     setFilteredEvents(filtered);
   };
 
+  console.log(openDrawer);
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen p-5 relative bg-[url('/public/assets/home-bg.jpg')] h-[600px] w-full bg-cover bg-center ">
       <EventSearchBar open={openDrawer} toggleDrawer={toggleDrawer} events={sportEventCardItems} onFilter={handleFilterEvents} />
-
       <div className="p-2">
-        <Button onClick={() => toggleDrawer(true)} variant="outlined" size="large">
+        <Button
+          onClick={() => toggleDrawer(true)}
+          variant="contained"
+          size="large"
+          className="bg-orange-500 hover:bg-orange-600 text-white"
+        >
           Search for event
         </Button>
       </div>
-      {loading && (
-        <div className="flex justify-center items-center">
-          <CircularProgress />
-        </div>
-      )}
-      {error && (
-        <div className="flex justify-center items-center text-red-500">
-          {error}
-        </div>
-      )}
-      {!loading && !error && (
-        <div className="flex flex-wrap justify-center gap-5 p-5">
-          {filteredEvents.map((x) => {
-            return <SportEventCardItem key={x.id} item={x} />;
-          })}
-        </div>
-      )}
+      <div className="flex flex-wrap justify-center gap-5 p-5">
+        {sportEventCardItems.map((x) => (
+          <SportEventCardItem key={x.id} item={x} />
+        ))}
+      </div>
     </div>
   );
 };
