@@ -27,7 +27,8 @@ const EventSearchBar = ({ open, toggleDrawer, events, onFilter }: Props) => {
         toggleDrawer(false);
     };
 
-    console.log(dateWhen);  
+    console.log(discipline);  
+
 
     const handleSearch = () => {
         const filteredEvents = events.filter(event => {
@@ -35,9 +36,14 @@ const EventSearchBar = ({ open, toggleDrawer, events, onFilter }: Props) => {
             const matchesCity = city ? event.objectCity === city : true;
             const matchesSkillLevel = skillLevel ? event.skillLevel === skillLevel : true;
             const matchesMultiSport = isMultiSport ? event.isMultisportCard === isMultiSport : true;
-            const matchesDate = dateWhen ? event.dateWhen === dateWhen : true;
+            const matchesDate = dateWhen ? event.dateWhen.includes(dateWhen) : true;
             return matchesDiscipline && matchesCity && matchesSkillLevel && matchesMultiSport && matchesDate;
         });
+        setDiscipline('');
+        setCity('');
+        setSkillLevel('');
+        setIsMultiSport(false);
+        setDateWhen(null);
 
         onFilter(filteredEvents); 
         toggleDrawer(false); 
@@ -84,9 +90,9 @@ const EventSearchBar = ({ open, toggleDrawer, events, onFilter }: Props) => {
                     onChange={(e) => setCity(e.target.value)}
                     label="City"
                 >
-                    <MenuItem value="Kraków">Kraków</MenuItem>
+                    <MenuItem value="Krakow">Kraków</MenuItem>
                     <MenuItem value="Warszawa">Warszawa</MenuItem>
-                    <MenuItem value="Gdańsk">Gdańsk</MenuItem>
+                    <MenuItem value="Gdansk">Gdańsk</MenuItem>
                 </Select>
             </FormControl>
             <FormControl className="w-[350px]">

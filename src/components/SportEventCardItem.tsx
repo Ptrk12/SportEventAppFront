@@ -9,7 +9,6 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { SportEvent, extractDateTime } from '../interfaces';
 
 
-//TODO DODAC ADRES DO API BACKEND !!!
 interface Props {
   item: SportEvent
 }

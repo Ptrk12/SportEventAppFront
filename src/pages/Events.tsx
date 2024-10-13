@@ -22,7 +22,7 @@ const Events = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/sporteventss');
+      const response = await api.get('/sportevents');
       setSportEventCardItems(response.data);
       setFilteredEvents(response.data);
       setLoading(false);
@@ -48,7 +48,7 @@ const Events = () => {
     setFilteredEvents(filtered);
   };
 
-  console.log(openDrawer);
+
   return (
     <div className="bg-gray-100 min-h-screen p-5 relative bg-[url('/public/assets/home-bg.jpg')] h-[600px] w-full bg-cover bg-center ">
       <EventSearchBar open={openDrawer} toggleDrawer={toggleDrawer} events={sportEventCardItems} onFilter={handleFilterEvents} />
@@ -63,7 +63,7 @@ const Events = () => {
         </Button>
       </div>
       <div className="flex flex-wrap justify-center gap-5 p-5">
-        {sportEventCardItems.map((x) => (
+        {filteredEvents.map((x) => (
           <SportEventCardItem key={x.id} item={x} />
         ))}
       </div>
