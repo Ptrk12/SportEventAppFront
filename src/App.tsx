@@ -8,6 +8,7 @@ import About from './pages/About';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import { UserProvider } from './contexts/UserContext';
+import CreateEvent from './pages/CreateEvent';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/create-sport-event' element={<CreateEvent/>}/>
       </Routes>
     </UserProvider>
   );
