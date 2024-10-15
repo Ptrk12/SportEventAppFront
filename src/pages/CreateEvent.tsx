@@ -161,8 +161,8 @@ const CreateEvent = () => {
   };
 
   return (
-<div className="bg-[url('/public/assets/stadium.jpg')] min-h-screen bg-cover flex justify-end">
-  <div className="w-[49%] h-[800px] bg-white mr-36 mt-8 rounded-lg bg-slate-50 flex flex-col p-6 box-border"> {/* Added padding inside the white box */}
+<div className="bg-[url('/public/assets/stadium.jpg')] min-h-screen bg-cover bg-opacity-70 flex justify-end items-center">
+  <div className="w-[90%] max-w-[1200px] h-auto bg-white shadow-lg mr-8 mt-8 rounded-xl bg-gradient-to-br from-slate-50 to-indigo-50 flex flex-col p-8 box-border">
     <PopupInfo
       message={popupMessage}
       severity={popupSeverity}
@@ -171,8 +171,8 @@ const CreateEvent = () => {
     />
     <form onSubmit={handleSubmit} className="flex flex-col h-full justify-between">
       {/* Flex container for inputs on the left */}
-      <div className="flex gap-x-8"> {/* Adjusted the gap between the columns */}
-        <div className="flex flex-col w-[60%] gap-7"> {/* Reduced the width of left section */}
+      <div className="flex flex-wrap gap-8">
+        <div className="flex flex-col w-full lg:w-[60%] gap-8">
           <div className="w-full flex gap-4 items-center">
             <TextField
               className="w-[75%]"
@@ -182,6 +182,9 @@ const CreateEvent = () => {
               name="eventName"
               value={eventName ?? ""}
               onChange={(e) => seteventName(e.target.value)}
+              InputProps={{
+                sx: { borderBottom: '2px solid #ccc', '&:hover': { borderBottom: '2px solid #999' } }
+              }}
             />
             {eventName && (
               <CheckCircleIcon sx={{ color: "green", marginLeft: "10px" }} />
@@ -203,7 +206,11 @@ const CreateEvent = () => {
                     border: "none",
                   },
                   "& .MuiSelect-select": {
-                    borderBottom: "1px solid gray",
+                    borderBottom: "2px solid gray",
+                    padding: '8px',
+                    '&:hover': {
+                      borderBottom: '2px solid #666',
+                    }
                   },
                 }}
                 labelId="discipline-select-label"
@@ -231,7 +238,11 @@ const CreateEvent = () => {
                     border: "none",
                   },
                   "& .MuiSelect-select": {
-                    borderBottom: "1px solid gray",
+                    borderBottom: "2px solid gray",
+                    padding: '8px',
+                    '&:hover': {
+                      borderBottom: '2px solid #666',
+                    }
                   },
                 }}
                 labelId="skillLevel-select-label"
@@ -264,7 +275,11 @@ const CreateEvent = () => {
                   border: "none",
                 },
                 marginBottom: "1px",
-                borderBottom: "1px solid gray",
+                borderBottom: "2px solid gray",
+                padding: '8px',
+                '&:hover': {
+                  borderBottom: '2px solid #666',
+                },
               }}
             />
             {object && (
@@ -272,7 +287,6 @@ const CreateEvent = () => {
             )}
           </div>
 
-          {/* Input fields for price, amount of players, game time */}
           <div className="w-full flex gap-4">
             <TextField
               className="w-[140px]"
@@ -311,10 +325,10 @@ const CreateEvent = () => {
         </div>
 
         {/* DateTimePicker container on the right */}
-        <div className="w-[35%] pl-8 flex justify-center items-center"> {/* Added padding-left and reduced width */}
+        <div className="w-full lg:w-[35%] flex justify-center items-center">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDateTimePicker
-              className="w-full"
+              className="w-full bg-white rounded-lg shadow-md"
               value={dateWhen ? dayjs(dateWhen) : null}
               onChange={(newDate) => {
                 if (newDate) {
@@ -329,14 +343,22 @@ const CreateEvent = () => {
       </div>
 
       {/* Submit button centered at the bottom */}
-      <div className="flex justify-center p-8">
+      <div className="flex justify-center py-8">
         <Button
           size="large"
           variant="contained"
           color="success"
           type="submit"
           disabled={!isFormValid()}
-          sx={{ backgroundColor: isFormValid() ? "" : "gray" }}
+          sx={{
+            backgroundColor: isFormValid() ? "linear-gradient(to right, #38b2ac, #2d3748)" : "gray",
+            '&:hover': {
+              backgroundColor: isFormValid() ? "#2c7a7b" : "gray",
+            },
+            color: 'white',
+            padding: '12px 24px',
+            borderRadius: '30px',
+          }}
         >
           CREATE
         </Button>
@@ -344,6 +366,8 @@ const CreateEvent = () => {
     </form>
   </div>
 </div>
+
+
   );
 };
 

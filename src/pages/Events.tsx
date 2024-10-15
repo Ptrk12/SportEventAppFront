@@ -4,6 +4,7 @@ import { Button, CircularProgress } from '@mui/material';
 import EventSearchBar from '../components/EventSearchBar';
 import api from '../requests/req';
 import { SportEvent } from '../interfaces';
+import { useLocation } from 'react-router-dom';
 
 const Events = () => {
   const [sportEventCardItems, setSportEventCardItems] = useState<SportEvent[]>([]);
@@ -11,6 +12,7 @@ const Events = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
 
   const isFetching = useRef(false);
 
@@ -45,6 +47,19 @@ const Events = () => {
   }, []);
 
   const handleFilterEvents = (filtered: SportEvent[]) => {
+    setFilteredEvents(filtered);
+  };
+
+  const filterEvents = (events: SportEvent[]) => {
+    const { discipline, city, searchString } = location.state || {};
+    const filtered = events.filter((event) => {
+      const matchesDiscipline = discipline ? event.discipline === discipline : true;
+      const matchesCity = city ? event.objectCity === city : true;
+      const matchesSearchString = searchString
+        ? event.address.toLowerCase().includes(searchString.toLowerCase())
+        : true;
+      return matchesDiscipline && matchesCity && matchesSearchString;
+    });
     setFilteredEvents(filtered);
   };
 
