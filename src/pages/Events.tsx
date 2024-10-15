@@ -4,16 +4,21 @@ import { Button, CircularProgress } from '@mui/material';
 import EventSearchBar from '../components/EventSearchBar';
 import api from '../requests/req';
 import { SportEvent } from '../interfaces';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import authHeader from '../services/auth-header';
+import authService from '../services/authService';
 
 const Events = () => {
+
+  const navigate = useNavigate();
+
   const [sportEventCardItems, setSportEventCardItems] = useState<SportEvent[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<SportEvent[]>([]);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
-
+console.log(location)
   const isFetching = useRef(false);
 
   const toggleDrawer = (newOpen: boolean) => {
@@ -24,17 +29,21 @@ const Events = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/sportevents');
+      const response = await api.get('/sportevents',{headers:authHeader()});
       setSportEventCardItems(response.data);
       setFilteredEvents(response.data);
+      filterEvents(response.data); 
       setLoading(false);
     } catch (err: any) {
       setLoading(false);
       setError('Failed to fetch events. Please try again.');
-      if (err.response) {
+      if (err.response && err.response.status === 403) {
+        authService.logout();
+        navigate('/login');
         console.log(err.response.data);
         console.log(err.response.status);
         console.log(err.response.headers);
+        window.location.reload();
       }
     }
   };
@@ -56,12 +65,17 @@ const Events = () => {
       const matchesDiscipline = discipline ? event.discipline === discipline : true;
       const matchesCity = city ? event.objectCity === city : true;
       const matchesSearchString = searchString
-        ? event.address.toLowerCase().includes(searchString.toLowerCase())
+        ? event.objectCity.toLowerCase().includes(searchString.toLowerCase())
         : true;
       return matchesDiscipline && matchesCity && matchesSearchString;
     });
     setFilteredEvents(filtered);
   };
+
+
+
+
+  console.log(filteredEvents)
 
 
   return (

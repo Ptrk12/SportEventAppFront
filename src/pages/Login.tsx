@@ -1,9 +1,10 @@
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '../contexts/UserContext'; // Use the UserContext
+import authService from '../services/authService';
 
 const Login = () => {
-  const userContext = useContext(UserContext); 
+  const userContext = useContext(UserContext); // Access the UserContext
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -11,25 +12,26 @@ const Login = () => {
     password: '',
   });
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Track error messages
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const userData = await authService.login(formData.email, formData.password); // Call login from authService
 
-    
-    const loggedInUser = {
-      firstName: 'Dynamic', 
-      lastName: 'User',     
-      email: formData.email,
-    };
+      // Update the UserContext with the logged-in user
+      if (userContext && userContext.login) {
+        userContext.login(userData); // Update context with user info
+      }
 
-    if (userContext && userContext.login) {
-      userContext.login(loggedInUser);
-      navigate('/');
-    } else {
-      console.error('Login function is not available in UserContext');
+      navigate('/'); // Navigate to home after successful login
+    } catch (error: any) {
+      console.log(error);
+      setErrorMessage('Invalid login credentials. Please try again.');
     }
   };
 
@@ -60,6 +62,7 @@ const Login = () => {
               required
             />
           </div>
+          {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
           <button
             type="submit"
             className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition duration-150"

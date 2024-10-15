@@ -18,8 +18,8 @@ import dayjs from "dayjs";
 import api from '../requests/req';
 import PopupInfo from '../components/PopupInfo';
 import { useNavigate } from 'react-router-dom';
-
-
+import authService from "../services/authService";
+import authHeader from "../services/auth-header";
 interface baseObjectsInfo{
   id:number
   name:string
@@ -97,10 +97,12 @@ const CreateEvent = () => {
 
   const fetchObjectsFromDb = async () => {
     try{
-      const response = await api.get("/object-base-info")
+      const response = await api.get("/object-base-info",{headers :authHeader()})
       setobjects(response.data)
     }catch(err:any){
-      if (err.response) {
+      if (err.response && err.response.status === 403) {
+        authService.logout();
+        navigate('/login')
         console.log(err.response.data);
         console.log(err.response.status);
         console.log(err.response.headers);
@@ -130,11 +132,8 @@ const CreateEvent = () => {
     };
 
     try {
-      const token = "CfDJ8PLc2bxNn7xGhVTfGs3MJhr2vJ7sSSjS4ycFi_WQipOQ57PWBZw4N9clyuzo3Dbw-5YS4v64da3HziekqERu7l3HrDWM0kxh1U0IKZqMofQ2eJZDvXyms2Y_2Q9pJXBqKLIIKCNq0aF6dpwuUiKnMsSBPpE1c12DT7TtZvVQeI_RS2sBy1FQQ-JB586CbeN3ERhdWgta-0gjAMc9Dg4HuNF6Xyf74Um63Xpx7mIUXj7T9kG603KUS53i9MN4kMBiorkT_EoCd-sJnXtvbSK2zJ7Mu-FhxFhXgIXX9vLF1ktB-fJEuaONxL6Of1A1jL8lSyI0u7YL8Cjt6fVbodqKuGVJE2wckhqo-k7s-4uEl8oGDnQUPboMNXByo-3g102d4MpFTgUn5-isNtRDzyZRzD97Yi4AvbxuGyKudq35aL3du_MaUL1vgXeNRbV8UYaRJ0EBogdFrb02OaYsCqeJOiPUhAJH6s0_N7ZUg9j73YN345MSSyM0nFOejZBuT_JpvGWR0jE7avRGHo2LWfDrr9iZzTsvHTNzs9E8kGAh_eLSaJQJwv0cV5xmZH-kNQdw4UUU1PbPIS2GqOXjho7eYbNZCtNCpNe9Xv1jv_I4QXPA7kEe7lrzC0b2wSEJNdmK_6zJS1r0dCmaUx1uuatpgheqHFyMI2lLMIfPREUIVc3QitR5ESmAoE-j1GPItFFIVw"; // Replace with your actual token
       const response = await api.post("/sportevents", eventData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers :authHeader(),
       });
       if (response.status === 201) {
         setPopupMessage("Event created successfully!");
@@ -143,10 +142,16 @@ const CreateEvent = () => {
         navigate('/events');
       }
     } catch (error: any) {
-      if (error.response && error.response.status > 400) {
-        setPopupMessage("Something went wrong! Event could not be created.");
-        setPopupSeverity("error");
-        setShowPopup(true);
+      if (error.response ) {
+        if(error.response.status === 400 || error.response.status === 409){
+          setPopupMessage("Something went wrong! Event could not be created.");
+          setPopupSeverity("error");
+          setShowPopup(true);
+        }
+        else if(error.response.status === 403){
+          authService.logout();
+          navigate('/login')
+        }
       } else {
         console.error("Error creating event", error);
         setPopupMessage("An unexpected error occurred.");
@@ -252,8 +257,8 @@ const CreateEvent = () => {
                 label="Skill Level"
               >
                 <MenuItem value="Amateur">Amateur</MenuItem>
-                <MenuItem value="Medium">Medium</MenuItem>
-                <MenuItem value="Pro">Pro</MenuItem>
+                <MenuItem value="Medium">Intermediate</MenuItem>
+                <MenuItem value="Pro">Professional</MenuItem>
               </Select>
             </FormControl>
             {skillLevel && (
