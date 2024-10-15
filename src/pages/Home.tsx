@@ -5,9 +5,11 @@ import {
   MenuItem,
   TextField,
   SelectChangeEvent,
+  IconButton,
 } from "@mui/material";
 import { useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from "react-router-dom";
 
 interface FormComponentProps {
   discipline: string;
@@ -16,11 +18,15 @@ interface FormComponentProps {
 }
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
   const [searchFormValues, setSearchFormValues] = useState<FormComponentProps>({
     discipline: "",
     city: "",
     searchString: "",
   });
+
 
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | SelectChangeEvent<string>
@@ -32,6 +38,11 @@ const Home = () => {
       [name]: value,
     }));
   };
+
+  const handleSearch = () => {
+    navigate('/events', { state: searchFormValues });
+  };
+
   return (
     <div className="flex flex-col">
       <div className="relative bg-[url('/public/assets/home-bg.jpg')] h-[600px] w-full bg-cover bg-center bg-top">
@@ -97,7 +108,9 @@ const Home = () => {
                 onChange={onInputChange}
               />
             </div>
-            <SearchIcon fontSize="large" style={{ color: '#5e2569' }} />
+            <IconButton onClick={handleSearch}>
+              <SearchIcon fontSize="large" style={{ color: '#5e2569' }} />
+            </IconButton>
           </div>
         </div>
       </div>
