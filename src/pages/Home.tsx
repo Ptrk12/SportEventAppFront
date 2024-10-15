@@ -40,6 +40,7 @@ const Home = () => {
   };
 
   const handleSearch = () => {
+    console.log(searchFormValues);
     navigate('/events', { state: searchFormValues });
   };
 
@@ -69,9 +70,9 @@ const Home = () => {
                 label="Discipline"
                 onChange={onInputChange}
               >
-                <MenuItem value="football">Football</MenuItem>
-                <MenuItem value="volleyball">Volleyball</MenuItem>
-                <MenuItem value="basketball">Basketball</MenuItem>
+                <MenuItem value="Football">Football</MenuItem>
+                <MenuItem value="Volleyball">Volleyball</MenuItem>
+                <MenuItem value="Basketball">Basketball</MenuItem>
               </Select>
             </FormControl>
             <FormControl className="w-[350px]">
@@ -92,9 +93,9 @@ const Home = () => {
                 label="City"
                 onChange={onInputChange}
               >
-                <MenuItem value="krakow">Kraków</MenuItem>
-                <MenuItem value="warszawa">Warszawa</MenuItem>
-                <MenuItem value="Gdansk">Gdańsk</MenuItem>
+                <MenuItem value="Krakow">Krakow</MenuItem>
+                <MenuItem value="Warszawa">Warszawa</MenuItem>
+                <MenuItem value="Gdansk">Gdansk</MenuItem>
               </Select>
             </FormControl>
             <div className="mt-[6px]">
