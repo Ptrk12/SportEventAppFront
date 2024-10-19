@@ -8,6 +8,7 @@ const login = (email: string, password: string) => {
   .then((response: any) => {
     if (response.data.accessToken) {
       localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem('userEmail', JSON.stringify(email));
     }
     return response.data; 
   });
@@ -29,6 +30,7 @@ const register = (email:string, password:string) => {
 
 const logout = () => {
   localStorage.removeItem('user');
+  localStorage.removeItem('userEmail');
 };
 
 const getCurrentUser = () => {

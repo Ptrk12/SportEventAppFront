@@ -113,8 +113,8 @@ const EventSearchBar = ({ open, toggleDrawer, events, onFilter }: Props) => {
                     label="Skill Level"
                 >
                     <MenuItem value="Amateur">Amateur</MenuItem>
-                    <MenuItem value="Medium">Intermediate</MenuItem>
-                    <MenuItem value="Pro">Professional</MenuItem>
+                    <MenuItem value="Intermediate">Intermediate</MenuItem>
+                    <MenuItem value="Professional">Professional</MenuItem>
                 </Select>
             </FormControl>
             <FormGroup>
