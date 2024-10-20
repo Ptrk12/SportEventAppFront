@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import CreateEvent from './pages/CreateEvent';
 import { UserProvider, UserContext } from './contexts/UserContext';
 import Footer from './components/Footer';
+import EventDetailsAndEdit from './pages/EventDetailsAndEdit';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<Home />} />
+      <Route path="/event-details/:eventId" element={<EventDetailsAndEdit />} />
 
       {/* Private routes: Only accessible when the user is authenticated */}
       {user ? (

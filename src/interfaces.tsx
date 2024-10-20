@@ -11,6 +11,10 @@ export interface SportEvent {
   skillLevel: string;
   isMultisportCard: boolean;
   createdBy:string;
+  time:number;
+  eventName:string;
+  objectId: number;
+  objectName: string;
 }
 
 interface DateTimeParts {

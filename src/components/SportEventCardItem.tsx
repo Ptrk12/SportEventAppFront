@@ -9,6 +9,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { SportEvent, extractDateTime } from '../interfaces';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import { getEmailFromToken } from "../services/auth-header";
+import { useNavigate } from "react-router-dom";
 
 
 interface Props {
@@ -16,6 +17,8 @@ interface Props {
 }
 
 const SportEventCardItem = ({ item }: Props) => {
+
+  const navigate = useNavigate();
   const formattedCost = item.price.toFixed(2);
 
   const renderMultiSport = () => {
@@ -34,7 +37,7 @@ const SportEventCardItem = ({ item }: Props) => {
     if (item.createdBy === emailFromToken) {
       return (
         <div className="absolute bottom-72 right-0 p-1">
-          <IconButton>
+          <IconButton onClick={() => navigate(`/event-details/${item.id}`)}>
               <HandymanIcon className="text-gray-800 cursor-pointer hover:text-orange-500" />
           </IconButton>
         </div>
