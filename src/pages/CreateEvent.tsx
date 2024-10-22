@@ -20,6 +20,7 @@ import PopupInfo from '../components/PopupInfo';
 import { useNavigate } from 'react-router-dom';
 import authService from "../services/authService";
 import authHeader from "../services/auth-header";
+
 interface baseObjectsInfo{
   id:number
   name:string
@@ -263,8 +264,8 @@ const CreateEvent = () => {
                 label="Skill Level"
               >
                 <MenuItem value="Amateur">Amateur</MenuItem>
-                <MenuItem value="Medium">Intermediate</MenuItem>
-                <MenuItem value="Pro">Professional</MenuItem>
+                <MenuItem value="Intermediate">Intermediate</MenuItem>
+                <MenuItem value="Professional">Professional</MenuItem>
               </Select>
             </FormControl>
             {skillLevel && (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import SportEventCardItem from '../components/SportEventCardItem';
-import { Button, CircularProgress } from '@mui/material';
+import { Button } from '@mui/material';
 import EventSearchBar from '../components/EventSearchBar';
 import api from '../requests/req';
 import { SportEvent } from '../interfaces';
@@ -9,7 +9,6 @@ import authHeader from '../services/auth-header';
 import authService from '../services/authService';
 
 const Events = () => {
-
   const navigate = useNavigate();
 
   const [sportEventCardItems, setSportEventCardItems] = useState<SportEvent[]>([]);
@@ -18,7 +17,6 @@ const Events = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
-console.log(location)
   const isFetching = useRef(false);
 
   const toggleDrawer = (newOpen: boolean) => {
@@ -29,7 +27,7 @@ console.log(location)
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/sportevents',{headers:authHeader()});
+      const response = await api.get('/sportevents',{ headers: authHeader() });
       setSportEventCardItems(response.data);
       setFilteredEvents(response.data);
       filterEvents(response.data); 
@@ -72,16 +70,10 @@ console.log(location)
     setFilteredEvents(filtered);
   };
 
-
-
-
-  console.log(filteredEvents)
-
-
   return (
-    <div className="bg-gray-100 min-h-screen p-5 relative bg-[url('/public/assets/home-bg.jpg')] h-[600px] w-full bg-cover bg-center ">
+    <div className="bg-gray-100 p-5 flex-grow relative"> {/* Flex-grow added here */}
       <EventSearchBar open={openDrawer} toggleDrawer={toggleDrawer} events={sportEventCardItems} onFilter={handleFilterEvents} />
-      <div className="p-2">
+      <div className='flex justify-between p-2'>
         <Button
           onClick={() => toggleDrawer(true)}
           variant="contained"
@@ -89,6 +81,14 @@ console.log(location)
           className="bg-orange-500 hover:bg-orange-600 text-white"
         >
           Search for event
+        </Button>
+        <Button
+          onClick={() => navigate('/create-sport-event')}
+          variant="contained"
+          size="large"
+          className="bg-orange-500 hover:bg-orange-600 text-white"
+        >
+          Create event
         </Button>
       </div>
       <div className="flex flex-wrap justify-center gap-5 p-5">

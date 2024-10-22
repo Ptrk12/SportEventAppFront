@@ -11,3 +11,24 @@ export default function authHeader(){
   }
   return {};
 }
+
+export function getEmailFromToken(): string {
+  const userString = localStorage.getItem("userEmail");
+
+  if (userString) {
+    const user = JSON.parse(userString);
+    
+    if (user) {
+      try {
+        console.log(user);
+        return user;
+      } catch (error) {
+        
+        return "";
+      }
+    }
+  }
+
+  return "";
+}
+

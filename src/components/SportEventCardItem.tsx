@@ -3,10 +3,13 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { SportEvent, extractDateTime } from '../interfaces';
+import HandymanIcon from '@mui/icons-material/Handyman';
+import { getEmailFromToken } from "../services/auth-header";
+import { useNavigate } from "react-router-dom";
 
 
 interface Props {
@@ -15,6 +18,7 @@ interface Props {
 
 const SportEventCardItem = ({ item }: Props) => {
 
+  const navigate = useNavigate();
   const formattedCost = item.price.toFixed(2);
 
   const renderMultiSport = () => {
@@ -28,7 +32,21 @@ const SportEventCardItem = ({ item }: Props) => {
     return null;
   };
 
-const parsedDateAndTime = extractDateTime(item.dateWhen);
+  const renderEditButton = () => {
+    const emailFromToken = getEmailFromToken();
+    if (item.createdBy === emailFromToken) {
+      return (
+        <div className="absolute bottom-72 right-0 p-1">
+          <IconButton onClick={() => navigate(`/event-details/${item.id}`)}>
+              <HandymanIcon className="text-gray-800 cursor-pointer hover:text-orange-500" />
+          </IconButton>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const parsedDateAndTime = extractDateTime(item.dateWhen);
 
   const getCategoryImageSrc = () => {
     switch (item.discipline) {
@@ -47,6 +65,7 @@ const parsedDateAndTime = extractDateTime(item.dateWhen);
     <div className="relative flex flex-col bg-white rounded-[15px] border border-gray-300 
     max-w-[350px] text-gray-800 transition-transform transform hover:scale-105 shadow-lg">
       {renderMultiSport()}
+      {renderEditButton()}
       <div className="ml-3 p-3 bg-orange-500 text-white mb-4 mt-4 max-w-[160px] rounded-[15px]">
         {item.objectCity}
       </div>
