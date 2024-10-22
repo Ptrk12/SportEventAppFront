@@ -11,6 +11,9 @@ import CreateEvent from './pages/CreateEvent';
 import { UserProvider, UserContext } from './contexts/UserContext';
 import Footer from './components/Footer';
 import EventDetailsAndEdit from './pages/EventDetailsAndEdit';
+import CreateObject from './pages/CreateObject';
+import ObjectDetailsPage from './pages/ObjectDetailsPage';
+import ObjectsCreatedByUs from './pages/ObjectsCreatedByUs';
 
 function App() {
   return (
@@ -40,10 +43,12 @@ function AppRoutes() {
       {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/create-object" element={<CreateObject />} />
+      <Route path="/object-details" element={<ObjectDetailsPage />} />
+      <Route path="/our-objects" element={<ObjectsCreatedByUs />} />
       <Route path="/" element={<Home />} />
       <Route path="/event-details/:eventId" element={<EventDetailsAndEdit />} />
 
-      {/* Private routes: Only accessible when the user is authenticated */}
       {user ? (
         <>
           <Route path="/events" element={<Events />} />
