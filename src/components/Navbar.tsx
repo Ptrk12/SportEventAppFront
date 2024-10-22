@@ -33,6 +33,11 @@ const Navbar = () => {
               Settings
             </li>
           </Link>
+          <Link to={"/our-objects"}>
+            <li className="hover:bg-orange-500 text-center py-2 px-4 rounded-md transition-colors duration-150">
+              My events and objects
+            </li>
+          </Link>
           <li
             onClick={() => {
               userContext?.logout();

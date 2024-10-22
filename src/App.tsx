@@ -9,12 +9,15 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import CreateEvent from './pages/CreateEvent';
 import { UserProvider, UserContext } from './contexts/UserContext';
+import CreateObject from './pages/CreateObject';
+import ObjectDetailsPage from './pages/ObjectDetailsPage';
+import ObjectsCreatedByUs from './pages/ObjectsCreatedByUs';
 
 function App() {
   return (
-    <UserProvider> {/* Wrap the app with UserProvider */}
+    <UserProvider> 
       <Navbar />
-      <AppRoutes /> {/* Separate routes into its own component */}
+      <AppRoutes /> 
     </UserProvider>
   );
 }
@@ -22,9 +25,8 @@ function App() {
 function AppRoutes() {
   const userContext = useContext(UserContext);
   
-  // If userContext is still loading, don't show any routes yet
   if (userContext?.isLoading) {
-    return <div>Loading...</div>; // You can replace this with a loader or spinner
+    return <div>Loading...</div>; 
   }
 
   const user = userContext?.user;
@@ -34,8 +36,10 @@ function AppRoutes() {
       {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/create-object" element={<CreateObject />} />
+      <Route path="/object-details" element={<ObjectDetailsPage />} />
+      <Route path="/our-objects" element={<ObjectsCreatedByUs />} />
 
-      {/* Private routes: Only accessible when the user is authenticated */}
       {user ? (
         <>
           <Route path="/" element={<Home />} />

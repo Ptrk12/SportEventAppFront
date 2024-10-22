@@ -165,6 +165,12 @@ const CreateEvent = () => {
     setShowPopup(false);
   };
 
+  const handleNavigateToObjectDetails = () => {
+    if (object) {
+      navigate(`/object-details/${object.id}`); 
+    }
+  };
+
   return (
 <div className="bg-[url('/public/assets/stadium.jpg')] min-h-screen bg-cover bg-opacity-70 flex justify-end items-center">
   <div className="w-[90%] max-w-[1200px] h-auto bg-white shadow-lg mr-8 mt-8 rounded-xl bg-gradient-to-br from-slate-50 to-indigo-50 flex flex-col p-8 box-border">
@@ -288,7 +294,16 @@ const CreateEvent = () => {
               }}
             />
             {object && (
-              <CheckCircleIcon sx={{ color: "green", marginLeft: "10px" }} />
+               <>
+               <CheckCircleIcon sx={{ color: "green", marginLeft: "10px" }} />
+               <Button
+                 variant="contained"
+                 color="primary"
+                 onClick={handleNavigateToObjectDetails}
+               >
+                 i
+               </Button>
+             </>
             )}
           </div>
 
