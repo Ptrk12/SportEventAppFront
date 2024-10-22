@@ -15,6 +15,7 @@ export interface SportEvent {
   eventName:string;
   objectId: number;
   objectName: string;
+  currentUserAssignedToEvent:boolean
 }
 
 interface DateTimeParts {

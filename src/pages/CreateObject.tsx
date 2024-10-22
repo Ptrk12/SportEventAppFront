@@ -4,24 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import authHeader from '../services/auth-header';
 import authService from '../services/authService';
 import PopupInfo from '../components/PopupInfo';
+import api from '../requests/req';
 
 type FormData = {
     name: string;
     description: string;
-    address: string;
+    adress: string;
     city: string;
     objectType: string;
 };
 
-const cityOptions = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
-const objectTypeOptions = ['Residential', 'Commercial', 'Industrial'];
+const cityOptions = ['Warszawa','Gdansk','Wroclaw','Krakow'];
+const objectTypeOptions = ['Hall', 'Stadium', 'Sports_field'];
 
 const CreateObject: React.FC = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState<FormData>({
         name: '',
         description: '',
-        address: '',
+        adress: '',
         city: cityOptions[0],
         objectType: objectTypeOptions[0]
     });
@@ -43,8 +44,8 @@ const CreateObject: React.FC = () => {
     };
 
     useEffect(() => {
-        const { name, description, address, city, objectType } = formData;
-        if (name && description && address && city && objectType) {
+        const { name, description, adress, city, objectType } = formData;
+        if (name && description && adress && city && objectType) {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
@@ -55,14 +56,14 @@ const CreateObject: React.FC = () => {
         e.preventDefault();
         if (isFormValid) {
             try {
-                const response = await axios.put('/api/objects', formData, {
+                const response = await api.post('/sport-objects', formData, {
                     headers: authHeader(),
                 });
 
                 setFormData({
                     name: '',
                     description: '',
-                    address: '',
+                    adress: '',
                     city: cityOptions[0],
                     objectType: objectTypeOptions[0]
                 });
@@ -70,7 +71,7 @@ const CreateObject: React.FC = () => {
                     setPopupMessage("Event created successfully!");
                     setPopupSeverity("success");
                     setShowPopup(true);
-                    navigate('/events');
+                    navigate('/create-sport-event');
                 }
             } catch (error: any) {
                 if (error.response) {
@@ -147,8 +148,8 @@ const CreateObject: React.FC = () => {
                     <label className="text-gray-600 mb-2">Address</label>
                     <input
                         type="text"
-                        name="address"
-                        value={formData.address}
+                        name="adress"
+                        value={formData.adress}
                         onChange={handleInputChange}
                         className="border border-gray-300 p-2 rounded focus:outline-none focus:border-orange-500"
                         required

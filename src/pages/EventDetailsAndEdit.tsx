@@ -89,13 +89,15 @@ const EventDetailsAndEdit = () => {
         }
     };
 
-//tutaj dac sprawdzanie headera
     const handleDelete = async() => {
         try{
             const id = Number(eventId);
             const response =await api.delete(`/sportevents/${id}`, { headers: authHeader() })
             if(response.status === 201){
                 navigate('/')
+            }else if(response.status === 403){
+                authService.logout();
+                navigate('/login');
             }
 
         }catch(error:any){
@@ -398,8 +400,6 @@ const EventDetailsAndEdit = () => {
                                 />
                             </div>
                         </div>
-
-                        {/* DateTimePicker container on the right */}
                         <div className="w-full lg:w-[35%] flex justify-center items-center">
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <StaticDateTimePicker
@@ -416,8 +416,6 @@ const EventDetailsAndEdit = () => {
                             </LocalizationProvider>
                         </div>
                     </div>
-
-                    {/* Submit button centered at the bottom */}
                     <div className="flex justify-center py-8">
                         <Button
                             size="large"

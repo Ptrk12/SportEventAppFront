@@ -6,23 +6,13 @@ import authService from '../services/authService';
 import authHeader from '../services/auth-header';
 import ObjectCardItem from '../components/ObjectCardItem';
 
-interface Cities {
-  id: number;
-  name: string;
-}
-
-interface ObjectTypes {
-  id: number;
-  typeName: string;
-}
-
 interface Object {
   id: number;
   name: string;
   description: string;
-  address: string;
-  city: Cities;
-  objectType: ObjectTypes;
+  adress: string;
+  city: string;
+  objectType: string;
 }
 
 const ObjectListPage: React.FC = () => {
@@ -33,7 +23,7 @@ const ObjectListPage: React.FC = () => {
   useEffect(() => {
     const fetchObjects = async () => {
       try {
-        const response = await api.get('/objects', { headers: authHeader() });
+        const response = await api.get('/objects-created-by-user', { headers: authHeader() });
         setObjects(response.data);
       } catch (error: any) {
         if (error.response && error.response.status === 403) {
@@ -49,6 +39,10 @@ const ObjectListPage: React.FC = () => {
 
     fetchObjects();
   }, [navigate]);
+
+  const handleDeleteObject = (id: number) => {
+    setObjects((prevObjects) => prevObjects.filter((object) => object.id !== id));
+  };
 
   if (loading) {
     return (
@@ -84,12 +78,14 @@ const ObjectListPage: React.FC = () => {
         {objects.map((object) => (
           <Grid item key={object.id} xs={12} sm={6} md={4} lg={3}>
             <ObjectCardItem
+              id={object.id}
               name={object.name}
               description={object.description}
-              address={object.address}
-              city={object.city.name}
-              objectType={object.objectType.typeName}
-              onClick={() => navigate(`/objects/${object.id}`)} 
+              address={object.adress}
+              city={object.city}
+              objectType={object.objectType}
+              onClick={() => navigate(`/object-details/${object.id}`)} 
+              onDelete={handleDeleteObject} // Pass the delete handler
             />
           </Grid>
         ))}

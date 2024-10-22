@@ -5,23 +5,14 @@ import api from '../requests/req';
 import authService from "../services/authService";
 import authHeader from "../services/auth-header";
 
-interface Cities {
-  id: number;
-  name: string;
-}
-
-interface ObjectTypes {
-  id: number;
-  typeName: string;
-}
 
 interface ObjectDetails {
   id: number;
   name: string;
   description: string;
-  address: string;
-  city: Cities;
-  objectType: ObjectTypes;
+  adress: string;
+  city: string;
+  objectType: string;
 }
 
 const ObjectDetailsPage = () => {
@@ -34,8 +25,13 @@ const ObjectDetailsPage = () => {
 
     const fetchObjectDetails = async () => {
       try {
-        const response = await api.get(`/object-details/${id}`, { headers: authHeader() });
-        setObjectDetails(response.data);
+        console.log('Fetching details...');
+        if (id !== undefined) {
+          const eventId = parseInt(id);
+          const response = await api.get(`/sport-objects/${eventId}`, { headers: authHeader() });
+          setObjectDetails(response.data);
+        }
+
       } catch (error: any) {
         if (error.response && error.response.status === 403) {
           authService.logout();
@@ -55,81 +51,100 @@ const ObjectDetailsPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 to-white">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <CircularProgress size={60} thickness={4.5} />
       </div>
     );
   }
 
   if (!objectDetails) {
-    return <div><CircularProgress /></div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <CircularProgress size={60} thickness={4.5} />
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-white flex items-center justify-center">
-      <div className="w-[90%] max-w-[800px] bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-2xl font-bold text-orange-600 mb-6">Object Details</h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-10">
+      <div className="w-full max-w-2xl bg-white shadow-2xl rounded-xl p-8 transition-transform transform hover:scale-105 duration-300">
+        <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Object Details</h1>
 
-        <form className="grid grid-cols-1 gap-6">
+        <form className="space-y-6">
           <TextField
             label="Name"
-            value={objectDetails.name}
+            value={objectDetails?.name || ''}  
             InputProps={{ readOnly: true }}
             fullWidth
             sx={{
               '& .MuiInputBase-root': {
-                backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                backgroundColor: '#f3f4f6', 
               },
+              '& label': {
+                color: '#4b5563', 
+              }
             }}
           />
 
           <TextField
             label="Description"
-            value={objectDetails.description}
+            value={objectDetails?.description || ''}  
             InputProps={{ readOnly: true }}
             fullWidth
             multiline
             minRows={3}
             sx={{
               '& .MuiInputBase-root': {
-                backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                backgroundColor: '#f3f4f6', 
               },
+              '& label': {
+                color: '#4b5563', 
+              }
             }}
           />
 
           <TextField
             label="Address"
-            value={objectDetails.address}
+            value={objectDetails?.adress || ''}  
             InputProps={{ readOnly: true }}
             fullWidth
             sx={{
               '& .MuiInputBase-root': {
-                backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                backgroundColor: '#f3f4f6', 
               },
+              '& label': {
+                color: '#4b5563', 
+              }
             }}
           />
 
           <TextField
             label="City"
-            value={objectDetails.city?.name}
+            value={objectDetails?.city || ''}  
             InputProps={{ readOnly: true }}
             fullWidth
             sx={{
               '& .MuiInputBase-root': {
-                backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                backgroundColor: '#f3f4f6', 
               },
+              '& label': {
+                color: '#4b5563', 
+              }
             }}
           />
 
           <TextField
             label="Object Type"
-            value={objectDetails.objectType?.typeName}
+            value={objectDetails?.objectType || ''}  
             InputProps={{ readOnly: true }}
             fullWidth
             sx={{
               '& .MuiInputBase-root': {
-                backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                backgroundColor: '#f3f4f6', 
               },
+              '& label': {
+                color: '#4b5563', 
+              }
             }}
           />
         </form>

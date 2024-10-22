@@ -11,18 +11,16 @@ import HandymanIcon from '@mui/icons-material/Handyman';
 import { getEmailFromToken } from "../services/auth-header";
 import { useNavigate } from "react-router-dom";
 
-
 interface Props {
-  item: SportEvent
+  item: SportEvent;
 }
 
 const SportEventCardItem = ({ item }: Props) => {
-
   const navigate = useNavigate();
   const formattedCost = item.price.toFixed(2);
 
   const renderMultiSport = () => {
-    if (item.isMultisportCard === true) {
+    if (item.isMultisportCard) {
       return (
         <div className="absolute top-2 right-2 bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center">
           M
@@ -38,7 +36,7 @@ const SportEventCardItem = ({ item }: Props) => {
       return (
         <div className="absolute bottom-72 right-0 p-1">
           <IconButton onClick={() => navigate(`/event-details/${item.id}`)}>
-              <HandymanIcon className="text-gray-800 cursor-pointer hover:text-orange-500" />
+            <HandymanIcon className="text-gray-800 cursor-pointer hover:text-orange-500" />
           </IconButton>
         </div>
       );
@@ -112,13 +110,24 @@ const SportEventCardItem = ({ item }: Props) => {
         {formattedCost} zł
       </div>
       <div className="p-5">
-        <Button
-          className="w-[100%] bg-orange-500 hover:bg-orange-600 text-white"
-          variant="contained"
-          endIcon={<LocalAtmIcon />}
-        >
-          Sign up
-        </Button>
+        {item.currentUserAssignedToEvent ? (
+          <Button
+            className="w-[100%] bg-red-500 hover:bg-red-600 text-white"
+            variant="outlined"
+            onClick={() => {/* Handle sign out logic here */}}
+          >
+            Sign Out
+          </Button>
+        ) : (
+          <Button
+            className="w-[100%] bg-orange-500 hover:bg-orange-600 text-white"
+            variant="contained"
+            endIcon={<LocalAtmIcon />}
+            onClick={() => {/* Handle sign up logic here */}}
+          >
+            Sign Up
+          </Button>
+        )}
       </div>
     </div>
   );

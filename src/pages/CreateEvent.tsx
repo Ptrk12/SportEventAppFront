@@ -302,7 +302,7 @@ const CreateEvent = () => {
                  color="primary"
                  onClick={handleNavigateToObjectDetails}
                >
-                 i
+                 ?
                </Button>
              </>
             )}
@@ -382,6 +382,15 @@ const CreateEvent = () => {
           }}
         >
           CREATE
+        </Button>
+        <Button
+          size="medium"
+          variant="contained"
+          color="success"
+          type="button"
+          onClick={()=>navigate('/create-object')}
+        >
+          Cant see interested object ? CREATE ONE
         </Button>
       </div>
     </form>

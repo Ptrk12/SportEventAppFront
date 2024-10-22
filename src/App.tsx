@@ -44,7 +44,7 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/create-object" element={<CreateObject />} />
-      <Route path="/object-details" element={<ObjectDetailsPage />} />
+      <Route path="/object-details/:id" element={<ObjectDetailsPage />} />
       <Route path="/our-objects" element={<ObjectsCreatedByUs />} />
       <Route path="/" element={<Home />} />
       <Route path="/event-details/:eventId" element={<EventDetailsAndEdit />} />
