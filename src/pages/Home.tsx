@@ -44,13 +44,12 @@ const Home = () => {
       const response = await api.get('/sportevents', { headers: authHeader() });
 
       const sortedEvents = response.data
-      .filter((event: SportEvent) => !isNaN(new Date(event.dateWhen).getTime()))
-      .sort((a: SportEvent, b: SportEvent) => {
-        return new Date(a.dateWhen).getTime() - new Date(b.dateWhen).getTime(); 
-      })
-      .slice(0, 4);
-    
-
+        .filter((event: SportEvent) => !isNaN(new Date(event.dateWhen).getTime()))
+        .sort((a: SportEvent, b: SportEvent) => {
+          return new Date(a.dateWhen).getTime() - new Date(b.dateWhen).getTime(); 
+        })
+        .slice(0, 4);
+      
       setSportEventCardItems(sortedEvents);
       setLoading(false);
     } catch (err: any) {
@@ -71,11 +70,26 @@ const Home = () => {
     }
   }, []);
 
+  const updatePlayerCount = (eventId: number, increment: boolean) => {
+    setSportEventCardItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === eventId
+          ? {
+              ...item,
+              peopleAssigned: increment
+                ? item.peopleAssigned + 1
+                : item.peopleAssigned - 1,
+                currentUserAssignedToEvent : increment
+            }
+          : item
+      )
+    );
+  };
+
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | SelectChangeEvent<string>
   ) => {
     const { name, value } = event.target;
-
     setSearchFormValues((prevValues) => ({
       ...prevValues,
       [name]: value,
@@ -161,7 +175,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Info Section */}
       <div className="flex flex-col items-center justify-center">
         <span className="font-bold text-3xl max-w-[25%] p-6 text-slate-700">
           Join a game in your area
@@ -195,7 +208,7 @@ const Home = () => {
         ) : (
           <div className="flex flex-wrap justify-center gap-5 p-5">
             {sportEventCardItems.map((x) => (
-              <SportEventCardItem key={x.id} item={x} />
+              <SportEventCardItem key={x.id} item={x} updatePlayerCount={updatePlayerCount} />
             ))}
           </div>
         )}

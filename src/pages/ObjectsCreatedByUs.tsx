@@ -23,7 +23,7 @@ const ObjectListPage: React.FC = () => {
   useEffect(() => {
     const fetchObjects = async () => {
       try {
-        const response = await api.get('/objects-created-by-user', { headers: authHeader() });
+        const response = await api.get('/sport-objects/objects-created-by-user', { headers: authHeader() });
         setObjects(response.data);
       } catch (error: any) {
         if (error.response && error.response.status === 403) {
@@ -59,7 +59,7 @@ const ObjectListPage: React.FC = () => {
           variant="contained"
           color="primary"
           size="large"
-          onClick={() => navigate('/my-events')}
+          onClick={() => navigate('/user-events')}
           sx={{
             backgroundColor: 'orange',
             '&:hover': {
@@ -85,7 +85,7 @@ const ObjectListPage: React.FC = () => {
               city={object.city}
               objectType={object.objectType}
               onClick={() => navigate(`/object-details/${object.id}`)} 
-              onDelete={handleDeleteObject} // Pass the delete handler
+              onDelete={handleDeleteObject}
             />
           </Grid>
         ))}

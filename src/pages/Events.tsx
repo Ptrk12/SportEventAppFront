@@ -53,6 +53,21 @@ const Events = () => {
     }
   }, []);
 
+  const updatePlayerCount = (eventId: number, increment: boolean) => {
+    setSportEventCardItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === eventId
+          ? {
+              ...item,
+              peopleAssigned: increment
+                ? item.peopleAssigned + 1
+                : item.peopleAssigned - 1,
+            }
+          : item
+      )
+    );
+  };
+
   const handleFilterEvents = (filtered: SportEvent[]) => {
     setFilteredEvents(filtered);
   };
@@ -93,7 +108,7 @@ const Events = () => {
       </div>
       <div className="flex flex-wrap justify-center gap-5 p-5">
         {filteredEvents.map((x) => (
-          <SportEventCardItem key={x.id} item={x} />
+          <SportEventCardItem key={x.id} item={x} updatePlayerCount={updatePlayerCount} />
         ))}
       </div>
     </div>

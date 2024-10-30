@@ -14,6 +14,7 @@ import EventDetailsAndEdit from './pages/EventDetailsAndEdit';
 import CreateObject from './pages/CreateObject';
 import ObjectDetailsPage from './pages/ObjectDetailsPage';
 import ObjectsCreatedByUs from './pages/ObjectsCreatedByUs';
+import CurrentLoggedUserEvents from './pages/CurrentLoggedUserEvents';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function AppRoutes() {
       <Route path="/our-objects" element={<ObjectsCreatedByUs />} />
       <Route path="/" element={<Home />} />
       <Route path="/event-details/:eventId" element={<EventDetailsAndEdit />} />
+      <Route path="/user-events" element={<CurrentLoggedUserEvents />} />
 
       {user ? (
         <>
