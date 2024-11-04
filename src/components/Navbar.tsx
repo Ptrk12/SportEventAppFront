@@ -101,8 +101,9 @@ const Navbar = () => {
                   alt="Profile"
                 />
                 <span className="text-[14px] text-white hover:text-orange-300 transition-colors duration-150">
-                  {userContext.user.firstName} {userContext.user.lastName}
+                  {userContext.user.email}, {userContext.user.money}$
                 </span>
+              
               </>
             ) : (
               <Link to={"/register"} className="text-white hover:text-orange-300">

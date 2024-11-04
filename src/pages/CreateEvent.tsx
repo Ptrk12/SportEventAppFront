@@ -20,6 +20,8 @@ import PopupInfo from '../components/PopupInfo';
 import { useNavigate } from 'react-router-dom';
 import authService from "../services/authService";
 import authHeader from "../services/auth-header";
+import { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext";
 
 interface baseObjectsInfo{
   id:number
@@ -28,14 +30,13 @@ interface baseObjectsInfo{
 
 const CreateEvent = () => {
   const navigate = useNavigate();
+  const userContext = useContext(UserContext);
 
   const [isMultisportCard, setIsMultisportCard] = useState(false)
   const [eventName, seteventName] = useState("");
-  const [price, setPrice] = useState<number | null>(null);
   const [time, setTime] = useState<number | null>(null);
   const [amountOfPlayers, setAmountOfPlayers] = useState<number | null>(null);
 
-  const [priceError, setPriceError] = useState(false);
   const [amountOfPlayersError, setAmountOfPlayersError] = useState(false);
   const [timeError, setTimeError] = useState(false);
 
@@ -55,17 +56,14 @@ const CreateEvent = () => {
     fetchObjectsFromDb();
   }, []);
 
-  console.log(dateWhen);
+  const now = dayjs();
+  const minDateTime = now.add(4, "hour");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, validity } = e.target;
     const numericValue = value === "" ? null : parseFloat(value);
 
     switch (name) {
-      case "price":
-        setPrice(numericValue);
-        setPriceError(!validity.valid || numericValue === null);
-        break;
       case "amountOfPlayers":
         setAmountOfPlayers(numericValue);
         setAmountOfPlayersError(!validity.valid || numericValue === null);
@@ -82,8 +80,6 @@ const CreateEvent = () => {
   const isFormValid = () => {
     return (
       eventName.trim() !== "" &&
-      price !== null &&
-      price > 0 &&
       time !== null &&
       time > 0 &&
       amountOfPlayers !== null &&
@@ -122,7 +118,6 @@ const CreateEvent = () => {
 
     const eventData = {
       eventName,
-      price,
       time,
       amountOfPlayers,
       discipline,
@@ -137,6 +132,7 @@ const CreateEvent = () => {
         headers :authHeader(),
       });
       if (response.status === 201) {
+        await userContext?.fetchUserInfo();
         setPopupMessage("Event created successfully!");
         setPopupSeverity("success");
         setShowPopup(true);
@@ -310,18 +306,7 @@ const CreateEvent = () => {
 
           <div className="w-full flex gap-4">
             <TextField
-              className="w-[140px]"
-              required
-              type="number"
-              label="Price"
-              name="price"
-              value={price ?? ""}
-              onChange={handleInputChange}
-              error={priceError}
-              helperText={priceError ? "Please enter price" : ""}
-            />
-            <TextField
-              className="w-[140px]"
+              className="w-[240px]"
               required
               type="number"
               label="n.o players"
@@ -332,7 +317,7 @@ const CreateEvent = () => {
               helperText={amountOfPlayersError ? "Please enter number of players" : ""}
             />
             <TextField
-              className="w-[140px]"
+              className="w-[240px]"
               required
               type="number"
               label="Game time"
@@ -358,7 +343,8 @@ const CreateEvent = () => {
                   setDateWhen(null);
                 }
               }}
-            />
+              minDateTime={minDateTime}
+            />      
           </LocalizationProvider>
         </div>
       </div>

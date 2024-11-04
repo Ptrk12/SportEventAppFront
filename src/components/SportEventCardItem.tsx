@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import api from '../requests/req';
 import authService from "../services/authService";
 import PopupInfo from "./PopupInfo";
+import { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext";
 
 interface Props {
   item: SportEvent;
@@ -27,6 +29,8 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
 
   const navigate = useNavigate();
   const formattedCost = item.price.toFixed(2);
+
+  const userContext = useContext(UserContext);
 
   const renderMultiSport = () => {
     if (item.isMultisportCard) {
@@ -63,7 +67,9 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
         setPopupSeverity("success");
         setShowPopup(true);
         updatePlayerCount(id, true);
-      }else{
+        await userContext?.fetchUserInfo();
+      }
+      else{
         setPopupMessage("Something went wrong!");
         setPopupSeverity("error");
         setShowPopup(true);
@@ -77,6 +83,9 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
         console.log(err.response.headers);
         window.location.reload();
       }
+      setPopupMessage("Something went wrong!");
+      setPopupSeverity("error");
+      setShowPopup(true);
     }
   };
 
@@ -88,6 +97,7 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
         setPopupSeverity("success");
         setShowPopup(true);
         updatePlayerCount(id, false);
+        await userContext?.fetchUserInfo();
       }else{
         setPopupMessage("Something went wrong!");
         setPopupSeverity("error");

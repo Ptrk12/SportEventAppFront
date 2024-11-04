@@ -12,6 +12,7 @@ type FormData = {
     adress: string;
     city: string;
     objectType: string;
+    pricePerHour: number;
 };
 
 const cityOptions = ['Warszawa','Gdansk','Wroclaw','Krakow'];
@@ -23,6 +24,7 @@ const CreateObject: React.FC = () => {
         name: '',
         description: '',
         adress: '',
+        pricePerHour: 0,
         city: cityOptions[0],
         objectType: objectTypeOptions[0]
     });
@@ -44,8 +46,8 @@ const CreateObject: React.FC = () => {
     };
 
     useEffect(() => {
-        const { name, description, adress, city, objectType } = formData;
-        if (name && description && adress && city && objectType) {
+        const { name, description, adress, city, objectType , pricePerHour} = formData;
+        if (name && description && adress && city && objectType && pricePerHour > 0) {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
@@ -64,6 +66,7 @@ const CreateObject: React.FC = () => {
                     name: '',
                     description: '',
                     adress: '',
+                    pricePerHour:0,
                     city: cityOptions[0],
                     objectType: objectTypeOptions[0]
                 });
@@ -100,7 +103,6 @@ const CreateObject: React.FC = () => {
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto mt-10">
-            {/* Popup message for success or error */}
             <PopupInfo
                 message={popupMessage}
                 severity={popupSeverity}
@@ -113,12 +115,8 @@ const CreateObject: React.FC = () => {
                 <p className="text-lg text-gray-700">Can't find the object you're looking for?</p>
                 <p className="text-2xl font-bold text-orange-600">Create one now!</p>
             </div>
-
-            {/* Form for creating a new object */}
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <h2 className="text-2xl font-semibold text-orange-600 mb-4">Create New Object</h2>
-
-                {/* Name Field */}
                 <div className="flex flex-col">
                     <label className="text-gray-600 mb-2">Name</label>
                     <input
@@ -130,8 +128,6 @@ const CreateObject: React.FC = () => {
                         required
                     />
                 </div>
-
-                {/* Description Field */}
                 <div className="flex flex-col">
                     <label className="text-gray-600 mb-2">Description</label>
                     <textarea
@@ -142,8 +138,6 @@ const CreateObject: React.FC = () => {
                         required
                     />
                 </div>
-
-                {/* Address Field */}
                 <div className="flex flex-col">
                     <label className="text-gray-600 mb-2">Address</label>
                     <input
@@ -155,8 +149,17 @@ const CreateObject: React.FC = () => {
                         required
                     />
                 </div>
-
-                {/* City Dropdown */}
+                <div className="flex flex-col">
+                    <label className="text-gray-600 mb-2">Price per hour</label>
+                    <input
+                        type="number"
+                        name="pricePerHour"
+                        value={formData.pricePerHour}
+                        onChange={handleInputChange}
+                        className="border border-gray-300 p-2 rounded focus:outline-none focus:border-orange-500"
+                        required
+                    />
+                </div>
                 <div className="flex flex-col">
                     <label className="text-gray-600 mb-2">City</label>
                     <select
@@ -173,8 +176,6 @@ const CreateObject: React.FC = () => {
                         ))}
                     </select>
                 </div>
-
-                {/* Object Type Dropdown */}
                 <div className="flex flex-col">
                     <label className="text-gray-600 mb-2">Object Type</label>
                     <select
@@ -191,8 +192,6 @@ const CreateObject: React.FC = () => {
                         ))}
                     </select>
                 </div>
-
-                {/* Submit Button */}
                 <div className="flex justify-end">
                     <button
                         type="submit"

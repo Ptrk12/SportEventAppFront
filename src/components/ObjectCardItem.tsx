@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import authHeader from "../services/auth-header";
 import api from '../requests/req';
+import PopupInfo from './PopupInfo';
 
 interface ObjectCardItemProps {
   id: number;
@@ -13,7 +14,7 @@ interface ObjectCardItemProps {
   city: string;
   objectType: string;
   onClick: () => void;
-  onDelete: (id: number) => void; // New prop for deletion
+  onDelete: (id: number) => void; 
 }
 
 const ObjectCardItem: React.FC<ObjectCardItemProps> = ({
@@ -24,21 +25,20 @@ const ObjectCardItem: React.FC<ObjectCardItemProps> = ({
   city,
   objectType,
   onClick,
-  onDelete // Destructure new prop
+  onDelete 
 }) => {
-  const [open, setOpen] = useState(false); // For handling the dialog state
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupSeverity, setPopupSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('error');
   const navigate = useNavigate();
 
-  // Open the confirmation dialog
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  // Close the dialog
   const handleClose = () => {
     setOpen(false);
-    setErrorMessage(null); // Reset error message when closing
   };
 
   const handleDelete = async () => {
@@ -46,22 +46,39 @@ const ObjectCardItem: React.FC<ObjectCardItemProps> = ({
       const response = await api.delete(`/sport-objects/${id}`, { headers: authHeader() });
 
       if (response.status === 204) {
-        onDelete(id); // Call the delete function passed from the parent
+        onDelete(id);
+        setShowPopup(true);
+        setPopupMessage("Success !");
+        setPopupSeverity("success");
       } else if (response.status === 403) {
         authService.logout();
         navigate('/login');
+      }else if(response.status === 409){
+        setShowPopup(true);
+        setPopupMessage("Something went wrong !");
+        setPopupSeverity("error");
       }
     } catch (error: any) {
-      console.error('Error deleting the object:', error);
-      setErrorMessage('Failed to delete the object.');
+      setShowPopup(true);
+      setPopupMessage("Something went wrong !");
+      setPopupSeverity("error");
     } finally {
       setOpen(false);
     }
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <div className="max-w-5xl w-80 bg-white rounded-3xl shadow-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300 m-8 cursor-pointer">
-      {/* Card Header - clickable */}
+       <PopupInfo
+      message={popupMessage}
+      severity={popupSeverity}
+      open={showPopup}
+      handleClose={handleClosePopup}
+    />
       <div 
         onClick={onClick} 
         className="relative overflow-hidden rounded-t-3xl h-56 bg-gradient-to-br from-blue-500 to-purple-600"
@@ -71,8 +88,6 @@ const ObjectCardItem: React.FC<ObjectCardItemProps> = ({
           {name}
         </div>
       </div>
-
-      {/* Card Content */}
       <div className="p-6 space-y-4">
         <p className="text-lg text-gray-700">
           {description.length > 100 ? `${description.substring(0, 100)}...` : description}
@@ -89,22 +104,18 @@ const ObjectCardItem: React.FC<ObjectCardItemProps> = ({
             <span className="font-semibold">Type:</span> {objectType}
           </div>
         </div>
-
-        {/* Delete Button - independent from card click */}
         <Button
           size="small"
           variant="contained"
           color="error"
           onClick={(e) => {
-            e.stopPropagation(); // Stop the card's onClick from triggering
+            e.stopPropagation(); 
             handleClickOpen();
           }}
         >
           DELETE
         </Button>
       </div>
-
-      {/* Confirmation Dialog */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -116,9 +127,6 @@ const ObjectCardItem: React.FC<ObjectCardItemProps> = ({
           <DialogContentText id="alert-dialog-description">
             The object will only be deleted if no events are assigned to it. 
           </DialogContentText>
-          {errorMessage && (
-            <p className="text-red-500 font-semibold">{errorMessage}</p>
-          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

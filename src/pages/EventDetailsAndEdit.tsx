@@ -21,6 +21,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import authService from "../services/authService";
 import authHeader from "../services/auth-header";
 import { SportEvent } from "../interfaces";
+import { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext";
 
 interface baseObjectsInfo {
     id: number
@@ -44,6 +46,8 @@ const EventDetailsAndEdit = () => {
     const [priceError, setPriceError] = useState(false);
     const [amountOfPlayersError, setAmountOfPlayersError] = useState(false);
     const [timeError, setTimeError] = useState(false);
+
+    const userContext = useContext(UserContext);
 
     const [discipline, setDiscipline] = useState("");
     const [skillLevel, setSkillLevel] = useState("");
@@ -93,7 +97,8 @@ const EventDetailsAndEdit = () => {
         try{
             const id = Number(eventId);
             const response =await api.delete(`/sportevents/${id}`, { headers: authHeader() })
-            if(response.status === 201){
+            if(response.status === 204){
+                await userContext?.fetchUserInfo();
                 navigate('/')
             }else if(response.status === 403){
                 authService.logout();
@@ -206,6 +211,7 @@ const EventDetailsAndEdit = () => {
                 headers: authHeader(),
             });
             if (response.status === 201) {
+                await userContext?.fetchUserInfo();
                 setPopupMessage("Event created successfully!");
                 setPopupSeverity("success");
                 setShowPopup(true);

@@ -32,9 +32,9 @@ function App() {
 
 function AppRoutes() {
   const userContext = useContext(UserContext);
-  
+
   if (userContext?.isLoading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   const user = userContext?.user;
@@ -44,19 +44,18 @@ function AppRoutes() {
       {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/create-object" element={<CreateObject />} />
-      <Route path="/object-details/:id" element={<ObjectDetailsPage />} />
-      <Route path="/our-objects" element={<ObjectsCreatedByUs />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/event-details/:eventId" element={<EventDetailsAndEdit />} />
-      <Route path="/user-events" element={<CurrentLoggedUserEvents />} />
-
       {user ? (
         <>
           <Route path="/events" element={<Events />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/about" element={<About />} />
           <Route path="/create-sport-event" element={<CreateEvent />} />
+          <Route path="/create-object" element={<CreateObject />} />
+          <Route path="/object-details/:id" element={<ObjectDetailsPage />} />
+          <Route path="/our-objects" element={<ObjectsCreatedByUs />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/event-details/:eventId" element={<EventDetailsAndEdit />} />
+          <Route path="/user-events" element={<CurrentLoggedUserEvents />} />
         </>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />

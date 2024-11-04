@@ -13,6 +13,7 @@ interface ObjectDetails {
   adress: string;
   city: string;
   objectType: string;
+  pricePerHour:number;
 }
 
 const ObjectDetailsPage = () => {
@@ -136,6 +137,20 @@ const ObjectDetailsPage = () => {
           <TextField
             label="Object Type"
             value={objectDetails?.objectType || ''}  
+            InputProps={{ readOnly: true }}
+            fullWidth
+            sx={{
+              '& .MuiInputBase-root': {
+                backgroundColor: '#f3f4f6', 
+              },
+              '& label': {
+                color: '#4b5563', 
+              }
+            }}
+          />
+          <TextField
+            label="Price per hour"
+            value={objectDetails?.pricePerHour || 0}  
             InputProps={{ readOnly: true }}
             fullWidth
             sx={{
