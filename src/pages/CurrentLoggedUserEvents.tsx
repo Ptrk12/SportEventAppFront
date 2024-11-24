@@ -45,19 +45,22 @@ const CurrentLoggedUserEvents = () => {
 
   const updatePlayerCount = (eventId: number, increment: boolean) => {
     setSportEventCardItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === eventId
-          ? {
-              ...item,
-              peopleAssigned: increment
-                ? item.peopleAssigned + 1
-                : item.peopleAssigned - 1,
-            }
-          : item
-      )
+      prevItems
+        .map((item) =>
+          item.id === eventId
+            ? {
+                ...item,
+                peopleAssigned: increment
+                  ? item.peopleAssigned + 1
+                  : item.peopleAssigned - 1,
+                currentUserAssignedToEvent: increment,
+              }
+            : item
+        )
+        .filter((item) => item.currentUserAssignedToEvent || item.id !== eventId)
     );
   };
-
+  
   return (
     <div>
       <span className='text-lg'>List of events you are assigned to</span>

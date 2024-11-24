@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { Button, IconButton } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { SportEvent, extractDateTime } from "../interfaces";
@@ -26,6 +26,9 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupSeverity, setPopupSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('error');
+  const [showPeopleListPopup, setShowPeopleListPopup] = useState(false);
+  const [peopleList, setPeopleList] = useState<string[]>([]);
+
 
   const navigate = useNavigate();
   const formattedCost = item.price.toFixed(2);
@@ -47,7 +50,7 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
     const emailFromToken = getEmailFromToken();
     if (item.createdBy === emailFromToken) {
       return (
-        <div className="absolute bottom-72 right-0 p-1">
+        <div className="absolute bottom-64 right-0 p-1">
           <IconButton onClick={() => navigate(`/event-details/${item.id}`)}>
             <HandymanIcon className="text-gray-800 cursor-pointer hover:text-orange-500" />
           </IconButton>
@@ -89,6 +92,27 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
     }
   };
 
+
+  const handleShowPeopleList = async (id: number) => {
+    try {
+      const response = await api.get(`/sportevents/${id}/people-in-event`, { headers: authHeader() });
+      if (response.status === 200) {
+        setPeopleList(response.data);
+        setShowPeopleListPopup(true);
+      } else {
+        setPopupMessage("Failed to load people list");
+        setPopupSeverity("error");
+        setShowPopup(true);
+      }
+    } catch (err: any) {
+      console.log(err);
+      setPopupMessage("Error fetching people list");
+      setPopupSeverity("error");
+      setShowPopup(true);
+    }
+  };
+  
+
   const handleSignOut = async (id: number) => {
     try {
       const response = await api.put( `/sportevents/assign-or-remove-from-event/${id}?operationType=remove`,{},{ headers: authHeader() });
@@ -113,6 +137,50 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
         window.location.reload();
       }
     }
+  };
+
+  const renderPeopleListPopup = () => {
+    return (
+      <Dialog 
+      open={showPeopleListPopup} 
+      onClose={() => setShowPeopleListPopup(false)}
+      fullWidth
+      maxWidth="md"
+    >
+      <DialogTitle className="text-center text-2xl font-bold bg-gray-100 py-4">
+        People in Event
+      </DialogTitle>
+      <DialogContent className="p-6">
+        {peopleList.length > 0 ? (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {peopleList.map((email, index) => (
+              <div
+                key={index}
+                className="p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition"
+              >
+                <span className="text-gray-800 font-medium">{email}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-500">
+            <p>No one has joined this event yet.</p>
+          </div>
+        )}
+      </DialogContent>
+      <DialogActions className="justify-center pb-6">
+        <Button
+          variant="contained"
+          color="primary"
+          className="px-6 py-2 text-lg"
+          onClick={() => setShowPeopleListPopup(false)}
+        >
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+    
+    );
   };
 
   const getCategoryImageSrc = () => {
@@ -144,7 +212,7 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
       open={showPopup}
       handleClose={handleClosePopup}
     />
-      <div className="ml-3 p-3 bg-orange-500 text-white mb-4 mt-4 max-w-[160px] rounded-[15px]">
+      <div className="ml-3 p-3 bg-orange-500 text-white mb-4 mt-4 max-w-[160px] rounded-[15px] flex flex-col">
         {item.objectCity}
       </div>
       <div className="flex justify-center max-w-full">
@@ -169,7 +237,9 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
           <span>{parsedDateAndTime.time}</span>
         </div>
         <div className="flex items-center text-gray-600">
-          <PeopleAltIcon />
+          <IconButton onClick={() => handleShowPeopleList(item.id)}>
+            <PeopleAltIcon  />
+          </IconButton>
           <span
             className={
               item.peopleAssigned === item.amountOfPlayers
@@ -209,6 +279,7 @@ const SportEventCardItem = ({ item ,updatePlayerCount  }: Props) => {
           </Button>
         )}
       </div>
+      {renderPeopleListPopup()}
     </div>
   );
 };

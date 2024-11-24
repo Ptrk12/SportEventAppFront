@@ -54,7 +54,7 @@ const Events = () => {
   }, []);
 
   const updatePlayerCount = (eventId: number, increment: boolean) => {
-    setSportEventCardItems((prevItems) =>
+    setFilteredEvents((prevItems) =>
       prevItems.map((item) =>
         item.id === eventId
           ? {
@@ -62,6 +62,7 @@ const Events = () => {
               peopleAssigned: increment
                 ? item.peopleAssigned + 1
                 : item.peopleAssigned - 1,
+                currentUserAssignedToEvent : increment
             }
           : item
       )

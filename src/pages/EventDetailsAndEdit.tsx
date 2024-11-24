@@ -39,7 +39,6 @@ const EventDetailsAndEdit = () => {
 
     const [isMultisportCard, setIsMultisportCard] = useState(false)
     const [eventName, seteventName] = useState("");
-    const [price, setPrice] = useState<number | null>(null);
     const [time, setTime] = useState<number | null>(null);
     const [amountOfPlayers, setAmountOfPlayers] = useState<number | null>(null);
 
@@ -74,7 +73,6 @@ const EventDetailsAndEdit = () => {
                 setSportEvent(eventData);
                 seteventName(eventData.eventName);
                 setIsMultisportCard(eventData.isMultisportCard);
-                setPrice(eventData.price);
                 setTime(eventData.time);
                 setDiscipline(eventData.discipline);
                 setSkillLevel(eventData.skillLevel);
@@ -150,10 +148,6 @@ const EventDetailsAndEdit = () => {
         const numericValue = value === "" ? null : parseFloat(value);
 
         switch (name) {
-            case "price":
-                setPrice(numericValue);
-                setPriceError(!validity.valid || numericValue === null);
-                break;
             case "amountOfPlayers":
                 setAmountOfPlayers(numericValue);
                 setAmountOfPlayersError(!validity.valid || numericValue === null);
@@ -170,8 +164,6 @@ const EventDetailsAndEdit = () => {
     const isFormValid = () => {
         return (
             eventName.trim() !== "" &&
-            price !== null &&
-            price > 0 &&
             time !== null &&
             time > 0 &&
             amountOfPlayers !== null &&
@@ -195,7 +187,6 @@ const EventDetailsAndEdit = () => {
 
         const eventData = {
             eventName,
-            price,
             time,
             amountOfPlayers,
             discipline,
@@ -371,17 +362,6 @@ const EventDetailsAndEdit = () => {
                             </div>
 
                             <div className="w-full flex gap-4">
-                                <TextField
-                                    className="w-[140px]"
-                                    required
-                                    type="number"
-                                    label="Price"
-                                    name="price"
-                                    value={price ?? ""}
-                                    onChange={handleInputChange}
-                                    error={priceError}
-                                    helperText={priceError ? "Please enter price" : ""}
-                                />
                                 <TextField
                                     className="w-[140px]"
                                     required
