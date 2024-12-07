@@ -15,6 +15,7 @@ import ObjectDetailsPage from './pages/ObjectDetailsPage';
 import ObjectsCreatedByUs from './pages/ObjectsCreatedByUs';
 import CurrentLoggedUserEvents from './pages/CurrentLoggedUserEvents';
 import  Settings  from './pages/Settings'
+import  Documentation  from './pages/Documentation'
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function AppRoutes() {
       {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/documentation" element={<Documentation />} />
       {user ? (
         <>
           <Route path="/events" element={<Events />} />
@@ -56,6 +58,7 @@ function AppRoutes() {
           <Route path="/event-details/:eventId" element={<EventDetailsAndEdit />} />
           <Route path="/user-events" element={<CurrentLoggedUserEvents />} />
           <Route path="/settings" element={<Settings />} />
+
         </>
       ) : (
         <Route path="*" element={<Navigate to="/login" />} />
