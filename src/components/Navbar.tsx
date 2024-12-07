@@ -23,11 +23,6 @@ const Navbar = () => {
     return (
       <div className="absolute right-0 top-16 flex flex-col bg-white border border-gray-300 shadow-lg rounded-md p-2 z-50">
         <ul className="flex flex-col gap-2">
-          <Link to={"/profile"}>
-            <li className="hover:bg-orange-500 text-center py-2 px-4 rounded-md transition-colors duration-150">
-              Profile
-            </li>
-          </Link>
           <Link to={"/settings"}>
             <li className="hover:bg-orange-500 text-center py-2 px-4 rounded-md transition-colors duration-150">
               Settings
@@ -73,11 +68,6 @@ const Navbar = () => {
             <Link to={"/events"}>
               <li className="border-b border-transparent hover:bg-orange-600 duration-150 rounded-md text-white py-2 px-4 transition-all">
                 Events
-              </li>
-            </Link>
-            <Link to={"/ranking"}>
-              <li className="border-b border-transparent hover:bg-orange-600 duration-150 rounded-md text-white py-2 px-4 transition-all">
-                Ranking
               </li>
             </Link>
             <Link to={"/about"}>

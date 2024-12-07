@@ -42,7 +42,6 @@ const EventDetailsAndEdit = () => {
     const [time, setTime] = useState<number | null>(null);
     const [amountOfPlayers, setAmountOfPlayers] = useState<number | null>(null);
 
-    const [priceError, setPriceError] = useState(false);
     const [amountOfPlayersError, setAmountOfPlayersError] = useState(false);
     const [timeError, setTimeError] = useState(false);
 
@@ -201,7 +200,7 @@ const EventDetailsAndEdit = () => {
             const response = await api.put(`/sportevents/${id}`, eventData, {
                 headers: authHeader(),
             });
-            if (response.status === 201) {
+            if (response.status === 204) {
                 await userContext?.fetchUserInfo();
                 setPopupMessage("Event created successfully!");
                 setPopupSeverity("success");
@@ -243,7 +242,6 @@ const EventDetailsAndEdit = () => {
                     handleClose={handleClosePopup}
                 />
                 <form onSubmit={handleSubmit} className="flex flex-col h-full justify-between">
-                    {/* Flex container for inputs on the left */}
                     <div className="flex flex-wrap gap-8">
                         <div className="flex flex-col w-full lg:w-[60%] gap-8">
                             <div className="w-full flex gap-4 items-center">
@@ -372,6 +370,9 @@ const EventDetailsAndEdit = () => {
                                     onChange={handleInputChange}
                                     error={amountOfPlayersError}
                                     helperText={amountOfPlayersError ? "Please enter number of players" : ""}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                 />
                                 <TextField
                                     className="w-[140px]"
@@ -383,6 +384,9 @@ const EventDetailsAndEdit = () => {
                                     onChange={handleInputChange}
                                     error={timeError}
                                     helperText={timeError ? "Please enter game time" : ""}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                 />
                             </div>
                         </div>

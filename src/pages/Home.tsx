@@ -97,7 +97,6 @@ const Home = () => {
   };
 
   const handleSearch = () => {
-    console.log(searchFormValues);
     navigate('/events', { state: searchFormValues });
   };
 
@@ -160,7 +159,7 @@ const Home = () => {
                 <TextField
                   className="w-[380px]"
                   id="search-string"
-                  label="Search: Krakow, MultiSport, z trenerem"
+                  label="Search: Krakow, Football..."
                   variant="standard"
                   name="searchString"
                   value={searchFormValues.searchString}

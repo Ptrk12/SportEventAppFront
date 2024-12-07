@@ -79,12 +79,12 @@ const Events = () => {
       const matchesDiscipline = discipline ? event.discipline === discipline : true;
       const matchesCity = city ? event.objectCity === city : true;
       const matchesSearchString = searchString
-        ? event.objectCity.toLowerCase().includes(searchString.toLowerCase())
+        ? `${event.objectCity.toLowerCase()} ${event.discipline.toLowerCase()}`.includes(searchString.toLowerCase())
         : true;
       return matchesDiscipline && matchesCity && matchesSearchString;
     });
     setFilteredEvents(filtered);
-  };
+};
 
   return (
     <div className="bg-gray-100 p-5 flex-grow relative"> {/* Flex-grow added here */}
