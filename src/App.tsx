@@ -46,10 +46,10 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/documentation" element={<Documentation />} />
+      <Route path="/about" element={<About />} />
       {user ? (
         <>
           <Route path="/events" element={<Events />} />
-          <Route path="/about" element={<About />} />
           <Route path="/create-sport-event" element={<CreateEvent />} />
           <Route path="/create-object" element={<CreateObject />} />
           <Route path="/object-details/:id" element={<ObjectDetailsPage />} />
