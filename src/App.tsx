@@ -16,6 +16,7 @@ import ObjectsCreatedByUs from './pages/ObjectsCreatedByUs';
 import CurrentLoggedUserEvents from './pages/CurrentLoggedUserEvents';
 import  Settings  from './pages/Settings'
 import  Documentation  from './pages/Documentation'
+import AddMoney from './pages/AddMoney';
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function AppRoutes() {
           <Route path="/event-details/:eventId" element={<EventDetailsAndEdit />} />
           <Route path="/user-events" element={<CurrentLoggedUserEvents />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/add-money" element={<AddMoney />} />
 
         </>
       ) : (

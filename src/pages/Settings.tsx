@@ -82,6 +82,13 @@ const Settings = () => {
         >
           Submit
         </button>
+        <button
+          type="button"
+          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          onClick={() =>navigate('/add-money')}
+        >
+          Add money
+        </button>
       </form>
       {showPopup && (
         <div
