@@ -111,7 +111,7 @@ const EventDetailsAndEdit = () => {
 
     const fetchObjectsFromDb = async () => {
         try {
-            const response = await api.get("/object-base-info", { headers: authHeader() })
+            const response = await api.get("/sport-objects/object-base-info", { headers: authHeader() })
             setobjects(response.data)
         } catch (err: any) {
             if (err.response && err.response.status === 403) {
