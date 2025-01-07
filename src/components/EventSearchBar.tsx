@@ -93,6 +93,7 @@ const EventSearchBar = ({ open, toggleDrawer, events, onFilter }: Props) => {
                     <MenuItem value="Krakow">Kraków</MenuItem>
                     <MenuItem value="Warszawa">Warszawa</MenuItem>
                     <MenuItem value="Gdansk">Gdańsk</MenuItem>
+                    <MenuItem value="Wroclaw">Wroclaw</MenuItem>
                 </Select>
             </FormControl>
             <FormControl className="w-[350px]">

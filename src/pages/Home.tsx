@@ -153,6 +153,7 @@ const Home = () => {
                   <MenuItem value="Krakow">Krakow</MenuItem>
                   <MenuItem value="Warszawa">Warszawa</MenuItem>
                   <MenuItem value="Gdansk">Gdansk</MenuItem>
+                  <MenuItem value="Wroclaw">Wroclaw</MenuItem>
                 </Select>
               </FormControl>
               <div className="mt-[6px]">

@@ -329,8 +329,6 @@ const CreateEvent = () => {
             />
           </div>
         </div>
-
-        {/* DateTimePicker container on the right */}
         <div className="w-full lg:w-[35%] flex justify-center items-center">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDateTimePicker
@@ -338,7 +336,7 @@ const CreateEvent = () => {
               value={dateWhen ? dayjs(dateWhen) : null}
               onChange={(newDate) => {
                 if (newDate) {
-                  setDateWhen(newDate.toISOString());
+                  setDateWhen(newDate.format("YYYY-MM-DDTHH:mm:ss"));
                 } else {
                   setDateWhen(null);
                 }
